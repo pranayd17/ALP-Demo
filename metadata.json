@@ -1,0 +1,6 @@
+{
+  "name": "AeroSchedule AGWOA - Aircraft Landing Optimization",
+  "description": "Interactive intelligent air transportation system for the Aircraft Landing Problem (ALP) powered by AGWOA (IEEE TITS 2025) with real-time optimization, OR-Library benchmarks, radar and runway visualization, and comparative analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
