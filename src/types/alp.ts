@@ -24,6 +24,21 @@ export interface ALPInstance {
   separation: number[][]; // [i][j] = min separation required if i lands before j
   description?: string;
   isBenchmark?: boolean;
+  category?: 'orlib' | 'hub' | 'custom';
+  airportCode?: string;
+  city?: string;
+  sourceType?: 'preset' | 'csv' | 'generated';
+}
+
+export interface ScenarioGeneratorConfig {
+  airportName: string;
+  airportCode: string;
+  aircraftCount: number;
+  trafficDensity: 'low' | 'medium' | 'high';
+  heavyRatio: number;   // 0 to 1
+  mediumRatio: number;  // 0 to 1
+  lightRatio: number;   // 0 to 1
+  freezeTime?: number;
 }
 
 export interface ScheduledAircraft {

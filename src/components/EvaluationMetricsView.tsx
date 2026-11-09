@@ -113,7 +113,7 @@ export const EvaluationMetricsView: React.FC<EvaluationMetricsViewProps> = ({ ev
               </div>
 
               {/* Substituted Numbers */}
-              {optimalCost !== null && (
+              {optimalCost !== null ? (
                 <div className="mt-2.5 pt-2 border-t border-gray-200 inline-flex items-center gap-1.5 text-xs text-blue-700 font-bold">
                   <span>=</span>
                   <span className="inline-flex flex-col items-center">
@@ -126,6 +126,10 @@ export const EvaluationMetricsView: React.FC<EvaluationMetricsViewProps> = ({ ev
                   <span className="text-sm font-extrabold text-blue-800">
                     {optimalityGap?.toFixed(2)}%
                   </span>
+                </div>
+              ) : (
+                <div className="mt-2.5 pt-2 border-t border-gray-200 text-[11px] text-gray-500 font-sans">
+                  Operational flight schedule: Baseline evaluated dynamically via AGWOA
                 </div>
               )}
             </div>

@@ -20,12 +20,15 @@ import { ScheduleTable } from './components/ScheduleTable';
 import { AirstripLandingView } from './components/AirstripLandingView';
 import { AirspaceMapView } from './components/AirspaceMapView';
 import { EvaluationMetricsView } from './components/EvaluationMetricsView';
+import { InstanceEditorModal } from './components/InstanceEditorModal';
+import { getInstanceByKey } from './data/benchmarkData';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'solver' | 'radar' | 'airstrip' | 'map' | 'metrics'>('solver');
-  const [selectedInstanceId, setSelectedInstanceId] = useState<number>(1);
+  const [selectedInstanceKey, setSelectedInstanceKey] = useState<string>('airland1');
   const [currentInstance, setCurrentInstance] = useState<ALPInstance>(() => buildORLibInstance(1));
   const [config, setConfig] = useState<AGWOAConfig>({ ...DEFAULT_AGWOA_CONFIG, seed: 43 });
+  const [isDatasetModalOpen, setIsDatasetModalOpen] = useState<boolean>(false);
 
   const [evaluation, setEvaluation] = useState<Evaluation | null>(null);
   const [currentIter, setCurrentIter] = useState<number>(0);
@@ -53,17 +56,30 @@ export default function App() {
     []
   );
 
-  // Load selected benchmark instance
-  useEffect(() => {
-    const inst = buildORLibInstance(selectedInstanceId);
+  // Switch built-in instance key
+  const handleSelectInstanceKey = (key: string) => {
+    setSelectedInstanceKey(key);
+    const inst = getInstanceByKey(key);
     setCurrentInstance(inst);
 
-    const targetSeed = 42 + selectedInstanceId;
+    const seedHash = key.split('').reduce((acc, char) => acc + char.charCodeAt(0), 42);
+    const newCfg = { ...config, seed: seedHash };
+    setConfig(newCfg);
+
+    initializeSolver(inst, newCfg);
+  };
+
+  // Load custom instance from CSV or Generator
+  const handleLoadCustomInstance = (inst: ALPInstance) => {
+    setSelectedInstanceKey(inst.id);
+    setCurrentInstance(inst);
+
+    const targetSeed = 42 + (inst.n % 30);
     const newCfg = { ...config, seed: targetSeed };
     setConfig(newCfg);
 
     initializeSolver(inst, newCfg);
-  }, [selectedInstanceId, initializeSolver]);
+  };
 
   // Run Optimization (Smooth live solve)
   const handleRunOptimization = () => {
@@ -143,14 +159,23 @@ export default function App() {
         {/* Simple Controls (Select Dataset + Optimize Button) */}
         <InteractiveSolver
           instance={currentInstance}
-          onSelectInstanceId={setSelectedInstanceId}
-          selectedInstanceId={selectedInstanceId}
+          onSelectInstanceKey={handleSelectInstanceKey}
+          selectedInstanceKey={selectedInstanceKey}
           config={config}
           onUpdateConfig={(newCfg) => setConfig((prev) => ({ ...prev, ...newCfg }))}
           onRunOptimization={handleRunOptimization}
           onReset={handleReset}
           isOptimizing={isOptimizing}
           currentIter={currentIter}
+          onOpenDatasetModal={() => setIsDatasetModalOpen(true)}
+        />
+
+        {/* Dataset Manager Modal (Real-world Hubs, CSV Importer, Scenario Generator) */}
+        <InstanceEditorModal
+          isOpen={isDatasetModalOpen}
+          onClose={() => setIsDatasetModalOpen(false)}
+          onLoadInstance={handleLoadCustomInstance}
+          currentInstanceId={currentInstance.id}
         />
 
         {/* View 1: Schedule & Solver */}

@@ -68,11 +68,12 @@ export const AirstripLandingView: React.FC<AirstripLandingViewProps> = ({ schedu
 
   useEffect(() => {
     scheduleRef.current = schedule;
-    if (schedule.length > 0 && currentTimeRef.current < minTime) {
-      currentTimeRef.current = minTime;
-      setCurrentTime(minTime);
+    currentTimeRef.current = minTime;
+    setCurrentTime(minTime);
+    if (schedule.length > 0) {
+      setSelectedFlightId(schedule[0].aircraftId);
     }
-  }, [schedule, minTime]);
+  }, [instance.id, minTime, schedule]);
 
   // Jump to specific flight landing
   const handleJumpToFlight = (flight: ScheduledAircraft) => {
