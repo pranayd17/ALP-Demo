@@ -17,9 +17,12 @@ import { InteractiveSolver } from './components/InteractiveSolver';
 import { RadarScope } from './components/RadarScope';
 import { RunwayTimeline } from './components/RunwayTimeline';
 import { ScheduleTable } from './components/ScheduleTable';
+import { AirstripLandingView } from './components/AirstripLandingView';
+import { AirspaceMapView } from './components/AirspaceMapView';
+import { EvaluationMetricsView } from './components/EvaluationMetricsView';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'solver' | 'radar'>('solver');
+  const [activeTab, setActiveTab] = useState<'solver' | 'radar' | 'airstrip' | 'map' | 'metrics'>('solver');
   const [selectedInstanceId, setSelectedInstanceId] = useState<number>(1);
   const [currentInstance, setCurrentInstance] = useState<ALPInstance>(() => buildORLibInstance(1));
   const [config, setConfig] = useState<AGWOAConfig>({ ...DEFAULT_AGWOA_CONFIG, seed: 43 });
@@ -163,6 +166,33 @@ export default function App() {
           <div>
             <RadarScope instance={currentInstance} schedule={schedule} />
             <ScheduleTable schedule={schedule} instanceName={currentInstance.name} />
+          </div>
+        )}
+
+        {/* View 3: Airstrip Landing Simulation */}
+        {activeTab === 'airstrip' && (
+          <div>
+            <AirstripLandingView schedule={schedule} instance={currentInstance} />
+            <div className="mt-6">
+              <ScheduleTable schedule={schedule} instanceName={currentInstance.name} />
+            </div>
+          </div>
+        )}
+
+        {/* View 4: Geographic Airspace Map View */}
+        {activeTab === 'map' && (
+          <div>
+            <AirspaceMapView schedule={schedule} instance={currentInstance} />
+            <div className="mt-6">
+              <ScheduleTable schedule={schedule} instanceName={currentInstance.name} />
+            </div>
+          </div>
+        )}
+
+        {/* View 5: Evaluation & Correctness Metrics */}
+        {activeTab === 'metrics' && (
+          <div>
+            <EvaluationMetricsView evaluation={evaluation} instance={currentInstance} />
           </div>
         )}
       </main>

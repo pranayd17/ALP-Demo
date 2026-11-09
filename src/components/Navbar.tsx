@@ -1,9 +1,9 @@
 import React from 'react';
-import { Plane, Calendar, Compass } from 'lucide-react';
+import { Plane, Calendar, Compass, Map, BarChart3 } from 'lucide-react';
 
 interface NavbarProps {
-  activeTab: 'solver' | 'radar';
-  setActiveTab: (tab: 'solver' | 'radar') => void;
+  activeTab: 'solver' | 'radar' | 'airstrip' | 'map' | 'metrics';
+  setActiveTab: (tab: 'solver' | 'radar' | 'airstrip' | 'map' | 'metrics') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
@@ -25,11 +25,11 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           </div>
         </div>
 
-        {/* Simple Tab Switcher */}
-        <div className="flex items-center bg-gray-100 p-1 rounded-lg border border-gray-200">
+        {/* Tab Switcher */}
+        <div className="flex items-center bg-gray-100 p-1 rounded-lg border border-gray-200 overflow-x-auto">
           <button
             onClick={() => setActiveTab('solver')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-all ${
               activeTab === 'solver'
                 ? 'bg-white text-blue-600 shadow-sm font-semibold'
                 : 'text-gray-600 hover:text-gray-900'
@@ -41,14 +41,50 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
 
           <button
             onClick={() => setActiveTab('radar')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-all ${
               activeTab === 'radar'
                 ? 'bg-white text-blue-600 shadow-sm font-semibold'
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
             <Compass className="w-4 h-4" />
-            <span>Radar & Approach View</span>
+            <span>Radar Scope</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('airstrip')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-all ${
+              activeTab === 'airstrip'
+                ? 'bg-white text-blue-600 shadow-sm font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <Plane className="w-4 h-4 rotate-45" />
+            <span>3D Airstrip</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('map')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-all ${
+              activeTab === 'map'
+                ? 'bg-white text-blue-600 shadow-sm font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <Map className="w-4 h-4" />
+            <span>Airspace Map</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('metrics')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md whitespace-nowrap transition-all ${
+              activeTab === 'metrics'
+                ? 'bg-white text-blue-600 shadow-sm font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <BarChart3 className="w-4 h-4" />
+            <span>Evaluation Metrics</span>
           </button>
         </div>
       </div>

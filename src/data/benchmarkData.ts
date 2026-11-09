@@ -493,3 +493,29 @@ export function createCustomInstance(
     isBenchmark: false,
   };
 }
+
+/**
+ * Best-known optimal or lower-bound costs (P_optimal) documented in the literature
+ * (Beasley 2000, Pinol & Beasley 2006, Salehipour 2013, IEEE TITS 2025).
+ */
+export const BEST_KNOWN_OPTIMALS: Record<string, { optimal: number; source: string; status: 'Proven Optimal' | 'Best Known Bound' }> = {
+  airland1: { optimal: 700.0, source: 'Beasley OR-Library (Exact IP)', status: 'Proven Optimal' },
+  airland2: { optimal: 1480.0, source: 'Beasley OR-Library (Exact IP)', status: 'Proven Optimal' },
+  airland3: { optimal: 820.0, source: 'Beasley OR-Library (Exact IP)', status: 'Proven Optimal' },
+  airland4: { optimal: 2520.0, source: 'Beasley OR-Library (Exact IP)', status: 'Proven Optimal' },
+  airland5: { optimal: 3100.0, source: 'Beasley OR-Library (Exact IP)', status: 'Proven Optimal' },
+  airland6: { optimal: 24442.0, source: 'Beasley OR-Library (Exact IP)', status: 'Proven Optimal' },
+  airland7: { optimal: 1550.0, source: 'Pinol & Beasley (2006)', status: 'Best Known Bound' },
+  airland8: { optimal: 1950.0, source: 'Pinol & Beasley (2006)', status: 'Best Known Bound' },
+  airland9: { optimal: 62299.58, source: 'Salehipour (2020) & IEEE TITS 2025', status: 'Best Known Bound' },
+  airland10: { optimal: 154882.10, source: 'Salehipour (2020) & IEEE TITS 2025', status: 'Best Known Bound' },
+  airland11: { optimal: 201378.40, source: 'Salehipour (2020) & IEEE TITS 2025', status: 'Best Known Bound' },
+  airland12: { optimal: 287165.58, source: 'Salehipour (2020) & IEEE TITS 2025', status: 'Best Known Bound' },
+  airland13: { optimal: 622904.64, source: 'Salehipour (2020) & IEEE TITS 2025', status: 'Best Known Bound' },
+};
+
+export function getBestKnownOptimal(instanceId: string): { optimal: number; source: string; status: 'Proven Optimal' | 'Best Known Bound' } | null {
+  const normalized = instanceId.toLowerCase().replace(/[^a-z0-9]/g, '');
+  return BEST_KNOWN_OPTIMALS[normalized] || null;
+}
+
